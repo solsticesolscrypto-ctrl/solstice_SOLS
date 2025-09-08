@@ -1,0 +1,481 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@media (min-width: 400px) and (max-width: 490px) {
+  .custom-vertical-tabs {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.25rem !important;
+    width: 100%;
+  }
+  .custom-vertical-tabs button {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos globales del HTML original */
+:root {
+  /* Ancho base del contenido; cámbialo si quieres más o menos ancho */
+  --container-max: 1600px;
+  /* Ancho máximo recomendado para contenedores de texto */
+  --narrow-max: 1100px;
+  /* Radios coherentes */
+  --radius-xl: 24px;
+  --radius-lg: 14px;
+  --brand: #66fcf1;      /* Primario (teal) */
+  --brand-2: #45a29e;    /* Secundario (teal oscuro) */
+  --brand-3: #7ee8df;    /* Acento más claro */
+  --panel-bg: #0f1115;
+  --card-bg: #14161a;
+  --text: #c5c6c7;
+  --text-muted: #a3a7ad;
+  --border: rgba(102, 252, 241, 0.45);
+  --ring: rgba(102, 252, 241, 0.15);
+}
+html {
+  width: 100vw;
+}
+*, *:before, *:after { box-sizing: inherit; }
+body {
+  font-family: 'Inter', sans-serif;
+  /* Fondo con leve gradiente radial para dar profundidad */
+  background-color: #0b0c10;
+  background-image:
+    radial-gradient(1200px 500px at 20% -10%, rgba(102, 252, 241, 0.08), transparent 60%),
+    radial-gradient(800px 400px at 85% 10%, rgba(69, 162, 158, 0.07), transparent 60%);
+  color: #c5c6c7;
+  line-height: 1.8;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Skip link accesible */
+.skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus { position:fixed; left:1rem; top:1rem; width:auto; height:auto; padding:.5rem .75rem; background:#111827; color:white; border:1px solid rgba(255,255,255,.15); border-radius:.5rem; z-index:9999; }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(1200px 600px at 10% -20%, rgba(126, 232, 223, 0.06), transparent 60%),
+              radial-gradient(1000px 500px at 110% 10%, rgba(69, 162, 158, 0.05), transparent 60%);
+}
+
+html { scroll-behavior: smooth; }
+.container {
+  max-width: var(--container-max);
+  width: 100%;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--brand), var(--brand-3));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Utilidades de tipografía fluida para mejor legibilidad en todas las pantallas */
+.fluid-h1 { font-size: clamp(2rem, 6.5vw, 4.5rem); line-height: 1.06; }
+.fluid-h2 { font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1.1; }
+.fluid-subtitle { font-size: clamp(1rem, 2.5vw, 1.25rem); }
+
+/* Medios fluidos por defecto */
+img, svg, video { max-width: 100%; height: auto; }
+
+.section-separator {
+  width: 80px;
+  height: 4px;
+  background-color: #66fcf1;
+  margin: 0 auto 2rem auto;
+  border-radius: 9999px;
+}
+
+/* Mejoras para móviles */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.5rem;
+    max-width: 100vw;
+  }
+  /* Mantener padding en footer; el header debe quedar pegado a la izquierda */
+  footer {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  header.header-glass {
+    padding-left: 0 !important;
+    padding-right: 0.5rem !important;
+  }
+  .gradient-text {
+    font-size: 2rem !important;
+  }
+  main.container {
+    padding: 1rem !important;
+  }
+  .section-separator {
+    margin-bottom: 1rem;
+  }
+  .grid {
+    gap: 1.5rem !important;
+  }
+}
+
+/* Animaciones y transiciones suaves */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Reduce motion para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #66fcf1, #45a29e);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #45a29e, #667eea);
+}
+
+/* Efectos de selección */
+::selection {
+  background: rgba(102, 252, 241, 0.3);
+  color: white;
+}
+
+::-moz-selection {
+  background: rgba(102, 252, 241, 0.3);
+  color: white;
+}
+
+/* Focus visible mejorado */
+*:focus-visible {
+  outline: 2px solid #66fcf1;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Nota: mostramos el label del selector de idioma para igualar las capturas */
+
+/* ---------- Utilidades de diseño modernas ---------- */
+.header-glass {
+  position: relative;
+  background: rgba(11, 12, 16, 0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: saturate(120%) blur(10px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+.footer-glass {
+  position: relative;
+  background: rgba(11, 12, 16, 0.7);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: saturate(120%) blur(6px);
+}
+.panel {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0) 16%),
+    radial-gradient(600px 200px at 0% 0%, rgba(102, 252, 241, 0.05), transparent 60%),
+    linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
+  background-color: var(--panel-bg);
+  border: 1px solid rgba(126, 232, 223, 0.45);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 0 16px rgba(102, 252, 241, 0.10);
+  outline: 1px solid var(--ring);
+  outline-offset: 0;
+  backdrop-filter: blur(6px);
+  transition: transform 180ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+.panel:hover {
+  border-color: rgba(126, 232, 223, 0.6);
+  box-shadow: 0 0 22px rgba(102, 252, 241, 0.14);
+  transform: translateY(-2px);
+}
+
+/* cabecera de sección mejorada */
+.section-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: #7ee8df;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  background: rgba(126,232,223,.1);
+  border: 1px solid rgba(126,232,223,.25);
+  padding: .35rem .75rem;
+  border-radius: 999px;
+}
+.section-title {
+  margin-top: .75rem;
+}
+
+.card {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 24%),
+    linear-gradient(0deg, rgba(255,255,255,0.015), rgba(255,255,255,0.015));
+  background-color: var(--card-bg);
+  border: 1px solid rgba(126, 232, 223, 0.45);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 0 12px rgba(102, 252, 241, 0.08);
+  outline: none; /* sin contorno base para evitar apariencia de contacto */
+  outline-offset: 4px; /* se usará en hover/focus */
+  backdrop-filter: blur(4px);
+  transform: translateZ(0);
+  will-change: transform, box-shadow, border-color;
+  transition: transform 160ms ease, box-shadow 200ms ease, border-color 200ms ease, background-color 200ms ease;
+}
+.card:hover {
+  border-color: rgba(126, 232, 223, 0.55);
+  box-shadow: 0 8px 24px rgba(102, 252, 241, 0.12);
+  transform: translateY(-2px);
+  outline: 1px solid var(--ring);
+}
+.card:focus-within {
+  border-color: rgba(126, 232, 223, 0.8);
+  box-shadow: 0 0 0 3px var(--ring), 0 8px 28px rgba(102, 252, 241, 0.14);
+  outline: 2px solid var(--ring);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #7ee8df, #66fcf1 60%, #3fd6cc);
+  color: #0b0c10;
+  font-weight: 700;
+  padding: 0.85rem 2.5rem;
+  border-radius: 9999px;
+  box-shadow: inset 0 0 0 2px rgba(102, 252, 241, 0.45), 0 8px 18px rgba(102, 252, 241, 0.15);
+  transform: translateZ(0);
+  transition: transform 140ms ease, filter 140ms ease, box-shadow 180ms ease;
+}
+.btn-primary:hover { filter: brightness(0.96); transform: translateY(-1px); box-shadow: inset 0 0 0 2px rgba(102, 252, 241, 0.55), 0 10px 22px rgba(102, 252, 241, 0.2); }
+.btn-primary:active { transform: translateY(0); filter: brightness(0.93); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--brand);
+  border: 2px solid var(--brand);
+  font-weight: 700;
+  padding: 0.85rem 2.5rem;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 1px rgba(102, 252, 241, 0.2);
+}
+.btn-outline:hover {
+  background: var(--brand);
+  color: #0b0c10;
+  filter: brightness(0.96);
+}
+
+/* enlace botón */
+.btn-link { color: var(--brand); font-weight: 700; }
+.btn-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Campos de formulario unificados */
+.input, .textarea, .select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-lg);
+  background-color: #2c2f33;
+  color: #ffffff;
+  border: 1px solid var(--border);
+  outline: none;
+  box-shadow: 0 0 0 0 rgba(102, 252, 241, 0);
+}
+.input::placeholder, .textarea::placeholder {
+  color: #9aa0a6;
+}
+.input:focus, .textarea:focus, .select:focus {
+  border-color: rgba(102, 252, 241, 0.9);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+.input:disabled, .textarea:disabled, .select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.textarea {
+  resize: vertical;
+}
+.input--error, .textarea--error {
+  border-color: rgba(239, 68, 68, 0.8);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* Pestañas (Header) con subrayado animado */
+.tab-btn {
+  position: relative;
+  /* Quitar cualquier "contenedor" visual */
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0;
+  color: white;
+  transition: color 180ms ease;
+}
+.tab-btn:hover,
+.tab-btn:active {
+  background: transparent !important;
+  color: white;
+  filter: none;
+}
+.tab-btn::after {
+  /* Sin subrayado animado */
+  content: none;
+}
+.tab-btn[aria-current="page"] {
+  color: white !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.tab-btn[aria-current="page"]::after { content: none; }
+
+.section-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* (Se eliminó el bloque .hero-visual a petición) */
+
+.progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 9999px;
+  background: #16181c;
+  outline: 1px solid var(--ring);
+  overflow: hidden;
+}
+.progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-2), var(--brand));
+}
+
+/* lista mejorada */
+.list-enhanced { list-style: none; padding-left: 0; }
+.list-enhanced li { position: relative; padding-left: 1.25rem; }
+.list-enhanced li::before { content: ''; position: absolute; left: 0; top: .7em; width: .5rem; height: .5rem; border-radius: 50%; background: linear-gradient(90deg, var(--brand-2), var(--brand)); box-shadow: 0 0 0 2px rgba(102,252,241,.15); }
+
+/* Contenedores de texto más estrechos que el panel principal */
+.narrow {
+  max-width: var(--narrow-max);
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .narrow {
+    max-width: 100vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+@media (min-width: 768px) {
+  .narrow { padding-left: 1.25rem; padding-right: 1.25rem; }
+}
+@media (min-width: 1024px) {
+  .narrow { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+
+/* (Eliminada .hide-scrollbar no usada) */
+
+/* Contenido de texto: ancho legible y cortes seguros */
+.text-content {
+  max-width: 70ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-content p,
+.text-content li {
+  line-height: 1.8;
+  color: var(--text);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.text-content ul { padding-left: 1rem; }
+/* Añadimos un poco de padding lateral al texto para más aire */
+.text-content { padding-left: 0.5rem; padding-right: 0.5rem; }
+@media (min-width: 768px) {
+  .text-content { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* Balancear títulos en múltiples líneas cuando sea posible */
+h1, h2 { text-wrap: balance; }
+
+/* Ocultar scrollbar en contenedores con clase no-scrollbar (sin romper accesibilidad) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Imágenes/SVG responsivos en contenedores de texto */
+.text-content img,
+.text-content svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Garantizar contenimiento en cards/paneles */
+.card .text-content,
+.panel .text-content {
+  max-width: 72ch;
+}
+.card :where(p, ul, ol) {
+  margin-left: 0;
+  margin-right: 0;
+}
+.card :where(ul) { padding-left: 1rem; }
+
+/* Secciones con espaciado vertical consistente */
+.section { margin-top: 4rem; margin-bottom: 4rem; }
+@media (min-width: 768px) {
+  .section { margin-top: 5rem; margin-bottom: 5rem; }
+}
+
+/* Separación automática entre contenedores adyacentes para que no se toquen */
+/* Aplica solo cuando el padre no es grid ni flex para no duplicar gaps existentes */
+:not(.grid):not(.flex):not([class*="space-y-"]) > :where(.panel, .card, .section) + :where(.panel, .card, .section) {
+  margin-top: 2rem;
+}
+
+/* Separación entre contenedores de texto para que no se toquen */
+/* Aplica dentro de padres que no usan grid/flex/space-y */
+:not(.grid):not(.flex):not([class*="space-y-"]) > :where(.narrow, .text-content) + :where(.narrow, .text-content) {
+  margin-top: 1.75rem;
+}
+
+/* Ritmo vertical dentro de bloques de texto: cualquier elemento tras otro gana margen superior */
+.text-content > * + * {
+  margin-top: 1rem;
+}
+@media (min-width: 768px) {
+  .text-content > * + * { margin-top: 1.25rem; }
+}
+
+/* Ajustes adicionales entre bloques vecinos de texto, incluso si no son hijos directos */
+.text-content + .text-content { margin-top: 1rem; }
+.narrow + .text-content,
+.text-content + .narrow { margin-top: 1.25rem; }

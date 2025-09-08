@@ -1,0 +1,11 @@
+/* Estilos básicos para App */
+.App {
+  text-align: center;
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
