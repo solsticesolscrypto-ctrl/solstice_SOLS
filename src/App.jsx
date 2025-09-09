@@ -77,15 +77,12 @@ const App = () => {
 	// Eliminado el renderizado por estado/hash: solo React Router
 
 	return (
-		<PhantomProvider
-			config={{
-				providerType: 'embedded',
-				embeddedWalletType: 'user-wallet',
-				addressTypes: [AddressType.solana],
-				apiBaseUrl: 'https://api.phantom.app/v1/wallets',
-				// organizationId: 'TU_ORG_ID' // Opcional
-			}}
-		>
+			<PhantomProvider
+				config={{
+					providerType: 'injected',
+					addressTypes: [AddressType.solana],
+				}}
+			>
 			<Helmet>
 				<html lang={language || 'es'} />
 				<title>{title}</title>
