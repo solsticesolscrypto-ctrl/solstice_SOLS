@@ -1,9 +1,10 @@
 import React from 'react';
 import { translations } from '../i18n';
 import Button from './ui/Button.jsx';
-
+import { useNavigate } from 'react-router-dom';
 const Home = ({ setCurrentPage, language }) => {
   const t = translations[language] || translations['es'];
+  const navigate = useNavigate();
 
   return (
     <section>
@@ -20,10 +21,10 @@ const Home = ({ setCurrentPage, language }) => {
           {t['hero-subtitle']}
         </p>
         <div className="mt-6 md:mt-8 w-full flex flex-row justify-center items-center gap-3">
-          <Button onClick={() => setCurrentPage('presale')} size="lg" variant="primary" className="w-fit">
+          <Button onClick={() => navigate('presale')} size="lg" variant="primary" className="w-fit">
             {t['hero-btn-presale']}
           </Button>
-          <Button onClick={() => setCurrentPage('whitepaper')} size="lg" variant="outline" className="w-fit">
+          <Button onClick={() => navigate('whitepaper')} size="lg" variant="outline" className="w-fit">
             {t['hero-btn-whitepaper']}
           </Button>
         </div>

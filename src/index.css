@@ -1,3 +1,7 @@
+/* Forzar color blanco en todos los inputs de texto, sobrescribiendo cualquier otro estilo */
+input[type="text"] {
+  color: #fff !important;
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 @media (min-width: 400px) and (max-width: 490px) {

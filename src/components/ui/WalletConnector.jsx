@@ -51,7 +51,7 @@ const WalletConnector = () => {
       return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-purple-900 rounded-lg p-6 shadow-lg w-80 text-center text-white">
-            <img src="/solstice-logo.png" alt="Phantom" className="mx-auto mb-4 w-16 h-16" />
+            <img src={`${import.meta.env.BASE_URL}solstice-logo.png`} alt="Phantom" className="mx-auto mb-4 w-16 h-16" />
             <h2 className="text-xl font-bold mb-2">Phantom Conectado</h2>
             <p className="mb-4 text-sm break-all">{account}</p>
             <button onClick={disconnectWallet} className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800">{t['disconnect'] || 'Desconectar'}</button>

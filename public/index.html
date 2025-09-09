@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Política de seguridad de contenido recomendada para producción -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://www.googleapis.com https://apis.google.com; connect-src 'self' https://firestore.googleapis.com https://*.firebaseio.com https://mainnet.helius-rpc.com https://tu-backend-url.com; img-src 'self' data: https://flagcdn.com https://cdn.simpleicons.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://solstice-14da8.firebaseapp.com;">
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/solstice-custom-logo.png" />
+    <link rel="alternate icon" href="/solstice-logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solstice — DAO en Solana</title>
+    <meta name="theme-color" content="#0b0c10" />
+    <meta name="description" content="Solstice — DAO en Solana: preventa, gobernanza y libro blanco. Participa en la comunidad y el futuro de DeFi." />
+    <meta property="og:title" content="Solstice — DAO en Solana" />
+    <meta property="og:description" content="Preventa, gobernanza y libro blanco. Participa en la comunidad y el futuro de DeFi." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://localhost:5174/" />
+    <meta property="og:image" content="/solstice-custom-logo.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Solstice — DAO en Solana" />
+    <meta name="twitter:description" content="Preventa, gobernanza y libro blanco. Participa en la comunidad y el futuro de DeFi." />
+    <meta name="twitter:image" content="/solstice-custom-logo.png" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <div id="root"></div>
+    <!-- Redirección automática para rutas limpias a hash-routes (HashRouter) en GitHub Pages -->
+    <script>
+      // Solo redirige si no hay hash y la ruta no es la raíz
+      if (!location.hash && location.pathname.startsWith('/solstice_SOLS/') && location.pathname !== '/solstice_SOLS/') {
+        const hashPath = location.pathname.replace('/solstice_SOLS/', '');
+        location.replace('/solstice_SOLS/#/' + hashPath + location.search + location.hash);
+      }
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

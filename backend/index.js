@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import { listenSolPayments } from "./solana-listener.js";
 import solsRouter from "./routes/sols.js";
+import airdropRouter from "./routes/airdrop.js";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -49,6 +50,7 @@ app.get("/status", (req, res) => {
 // Endpoint para enviar tokens SOLS tras pago validado
 // Modularización: rutas de SOLS
 app.use("/", solsRouter);
+app.use("/", airdropRouter);
 
 // Middleware de manejo centralizado de errores
 app.use((err, req, res, next) => {

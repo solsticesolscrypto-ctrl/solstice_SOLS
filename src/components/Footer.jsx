@@ -11,7 +11,7 @@ const Footer = ({ language = 'es' }) => {
 				{/* Iconos sociales */}
 				<div className="flex items-center gap-3 shrink-0">
 					<a
-						href="https://x.com/SolsticeSo44175"
+						href="https://x.com/SolsticeSols"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="group inline-flex items-center justify-center rounded-full p-2 transition-colors hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20"

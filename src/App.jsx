@@ -2,6 +2,7 @@ import Airdrop from './components/Airdrop.jsx';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { PhantomProvider, AddressType } from '@phantom/react-sdk';
 
 // Estilos
 
@@ -21,9 +22,14 @@ const Presale = React.lazy(() => import('./components/Presale.jsx'));
 import Footer from './components/Footer.jsx';
 import MessageBox from './components/MessageBox.jsx';
 
+
+
 const App = () => {
-	// Estado global sencillo para idioma
-	const [language, setLanguage] = useState('es'); // 'es' | 'en' | 'zh'
+	// Estado global sencillo para idioma, forzando inglés y limpiando localStorage
+	useEffect(() => {
+		localStorage.removeItem('language');
+	}, []);
+	const [language, setLanguage] = useState('en'); // 'es' | 'en' | 'zh'
 	const location = useLocation();
 
 	// Mensajería global (éxito / error)
@@ -71,7 +77,15 @@ const App = () => {
 	// Eliminado el renderizado por estado/hash: solo React Router
 
 	return (
-		<>
+		<PhantomProvider
+			config={{
+				providerType: 'embedded',
+				embeddedWalletType: 'user-wallet',
+				addressTypes: [AddressType.solana],
+				apiBaseUrl: 'https://api.phantom.app/v1/wallets',
+				// organizationId: 'TU_ORG_ID' // Opcional
+			}}
+		>
 			<Helmet>
 				<html lang={language || 'es'} />
 				<title>{title}</title>
@@ -128,7 +142,7 @@ const App = () => {
 					onClose={() => setToast({ message: '', type: toast.type })}
 				/>
 			</div>
-		</>
+		</PhantomProvider>
 	);
 };
 

@@ -141,6 +141,21 @@ export const translations = {
     // Whitepaper content
     whitepaper: {
       tocTitle: 'Índice',
+      toc: [
+  '1. Introducción: El Problema y Nuestra Solución',
+  '2. Visión y Misión del Ecosistema',
+  '3. Tecnología y Arquitectura de la Blockchain',
+  '4. Tokenomía Detallada ($SOLS)',
+  '5. Hoja de Ruta Completa y Futuros Hitos',
+  '6. Mecanismos de Gobernanza Descentralizada',
+  '7. Seguridad y Auditorías del Protocolo',
+  '8. Conclusión: El Futuro de Solstice',
+  '9. Transparencia de tokens $SOLS',
+  '10. Preventa: Cómo Participar, Requisitos y Seguridad',
+  '11. DAO: Funcionamiento, Propuestas y Votaciones',
+  '12. Preguntas Frecuentes (FAQ)',
+  '13. Condiciones Legales, Términos y Privacidad'
+      ],
       sections: {
         presale: {
           title: 'Preventa: Cómo Participar, Requisitos y Seguridad',
@@ -366,60 +381,27 @@ export const translations = {
     whitepaper: {
       tocTitle: 'Table of Contents',
       toc: [
-        'Introduction: The Problem and Our Solution',
-        'Vision and Mission of the Ecosystem',
-        'Blockchain Technology and Architecture',
-        'Detailed Tokenomics ($SOLS)',
-        'Complete Roadmap and Future Milestones',
-        'Decentralized Governance Mechanisms',
-        'Protocol Security and Audits',
-        'Conclusion: The Future of Solstice'
+        '1. Introduction: The Problem and Our Solution',
+        '2. Vision and Mission of the Ecosystem',
+        '3. Blockchain Technology and Architecture',
+        '4. Detailed Tokenomics ($SOLS)',
+        '5. Complete Roadmap and Future Milestones',
+        '6. Decentralized Governance Mechanisms',
+        '7. Protocol Security and Audits',
+        '8. Conclusion: The Future of Solstice',
+        '9. Token $SOLS Transparency',
+        '10. Presale: How to Participate, Requirements & Security',
+        '11. DAO: Operation, Proposals & Voting',
+        '12. Frequently Asked Questions (FAQ)',
+        '13. Legal Terms, Conditions & Privacy'
       ],
       sections: {
-        presale: {
-          title: 'Presale: How to Participate, Requirements & Security',
-          content: [
-            '<b>How to participate?</b> To join the presale, simply connect your Phantom wallet and follow the instructions in the presale tab. Only Phantom is allowed for maximum security and ease of use.',
-            '<b>Requirements:</b> You must have an active Phantom wallet and enough SOL to cover the purchase and network fees.',
-            '<b>Security:</b> All transactions are performed on the Solana blockchain, ensuring transparency and security. We do not store private keys or access your funds.',
-            'Presale progress and purchase limits are displayed in real time on the platform.'
-          ]
-        },
-        dao: {
-          title: 'DAO: Operation, Proposals & Voting',
-          content: [
-            '<b>Proposal creation:</b> To create a proposal, connect your Phantom wallet and pay a 0.001 SOL fee. The create proposal button is only enabled after the fee is paid.',
-            '<b>Voting:</b> Each wallet can vote only once per proposal, ensuring a fair and decentralized process. Vote counts and proposal status are shown in real time.',
-            'The DAO allows the community to make key decisions about the project’s future in a transparent and secure way.'
-          ]
-        },
-        faq: {
-          title: 'Frequently Asked Questions (FAQ)',
-          content: [
-            '<b>Which wallet can I use?</b> Only Phantom is supported for maximum security and user experience.',
-            '<b>How do I participate in the presale?</b> Connect your Phantom and follow the instructions in the presale tab.',
-            '<b>How do I create a proposal in the DAO?</b> Connect your Phantom, pay the fee, and fill out the proposal form.',
-            '<b>Can I vote multiple times?</b> No, you can only vote once per proposal with each wallet.',
-            '<b>Are my funds safe?</b> Yes, all operations are performed on the Solana blockchain and we never store your private keys.'
-          ]
-        },
-        legal: {
-          title: 'Legal Terms, Conditions & Privacy',
-          content: [
-            'Using the platform implies acceptance of the published terms and conditions. The platform does not request or store sensitive personal data. All operations are performed on the Solana blockchain.',
-            'For more information about privacy and legal terms, see the relevant section on the official website or contact the Solstice team.'
-          ]
-        },
-        transparencia: {
-          title: 'Token $SOLS Transparency',
-          content: '<b>Wallet holding the presale tokens:</b><br/><span class="break-all font-mono text-[#66fcf1]">CgAkPzZpdKAY9Cwzd2AiKmrRHgAK6DyVFn1n6VCQknEb</span><br/>This wallet contains the $SOLS currently being sold in the presale.<br/><br/><b>Wallet holding the remaining $SOLS tokens:</b><br/><span class="break-all font-mono text-[#66fcf1]">EZwVQKnP5c3K2etpt24VjE1hG3ycq2SZe52NUcZpgo2F</span><br/>Here are stored the tokens not included in the presale, until the liquidity pool is created.<br/><br/>Both addresses can be audited on any Solana explorer.'
-        },
         intro: {
           title: '1. Introduction: The Problem and Our Solution',
           content: "Most DeFi projects face issues of centralization, lack of transparency, and unfair value distribution. Solstice addresses these challenges by leveraging Solana's high-speed infrastructure to create a fully decentralized ecosystem..."
         },
         vision: {
-          title: '2. Vision and Ecosystem Mission',
+          title: '2. Vision and Mission of the Ecosystem',
           content: 'Our vision is for Solstice to become the reference launchpad for transparent, community-driven projects on the Solana network...'
         },
         tech: {
@@ -447,12 +429,50 @@ export const translations = {
           content: 'Solstice governance will be executed through a DAO, empowering $SOLS holders to make critical decisions...'
         },
         security: {
-          title: '7. Security and Protocol Audits',
+          title: '7. Protocol Security and Audits',
           content: 'Security is our top priority. All Solstice smart contracts will undergo an audit...'
         },
         conclusion: {
           title: '8. Conclusion: The Future of Solstice',
           content: 'Solstice represents a new dawn for decentralized finance on Solana...'
+        },
+        transparencia: {
+          title: '9. Token $SOLS Transparency',
+          content: '<b>Wallet holding the presale tokens:</b><br/><span class="break-all font-mono text-[#66fcf1]">CgAkPzZpdKAY9Cwzd2AiKmrRHgAK6DyVFn1n6VCQknEb</span><br/>This wallet contains the $SOLS currently being sold in the presale.<br/><br/><b>Wallet holding the remaining $SOLS tokens:</b><br/><span class="break-all font-mono text-[#66fcf1]">EZwVQKnP5c3K2etpt24VjE1hG3ycq2SZe52NUcZpgo2F</span><br/>Here are stored the tokens not included in the presale, until the liquidity pool is created.<br/><br/>Both addresses can be audited on any Solana explorer.'
+        },
+        presale: {
+          title: '10. Presale: How to Participate, Requirements & Security',
+          content: [
+            '<b>How to participate?</b> To join the presale, simply connect your Phantom wallet and follow the instructions in the presale tab. Only Phantom is allowed for maximum security and ease of use.',
+            '<b>Requirements:</b> You must have an active Phantom wallet and enough SOL to cover the purchase and network fees.',
+            '<b>Security:</b> All transactions are performed on the Solana blockchain, ensuring transparency and security. We do not store private keys or access your funds.',
+            'Presale progress and purchase limits are displayed in real time on the platform.'
+          ]
+        },
+        dao: {
+          title: '11. DAO: Operation, Proposals & Voting',
+          content: [
+            '<b>Proposal creation:</b> To create a proposal, connect your Phantom wallet and pay a 0.001 SOL fee. The create proposal button is only enabled after the fee is paid.',
+            '<b>Voting:</b> Each wallet can vote only once per proposal, ensuring a fair and decentralized process. Vote counts and proposal status are shown in real time.',
+            'The DAO allows the community to make key decisions about the project’s future in a transparent and secure way.'
+          ]
+        },
+        faq: {
+          title: '12. Frequently Asked Questions (FAQ)',
+          content: [
+            '<b>Which wallet can I use?</b> Only Phantom is supported for maximum security and user experience.',
+            '<b>How do I participate in the presale?</b> Connect your Phantom and follow the instructions in the presale tab.',
+            '<b>How do I create a proposal in the DAO?</b> Connect your Phantom, pay the fee, and fill out the proposal form.',
+            '<b>Can I vote multiple times?</b> No, you can only vote once per proposal with each wallet.',
+            '<b>Are my funds safe?</b> Yes, all operations are performed on the Solana blockchain and we never store your private keys.'
+          ]
+        },
+        legal: {
+          title: '13. Legal Terms, Conditions & Privacy',
+          content: [
+            'Using the platform implies acceptance of the published terms and conditions. The platform does not request or store sensitive personal data. All operations are performed on the Solana blockchain.',
+            'For more information about privacy and legal terms, see the relevant section on the official website or contact the Solstice team.'
+          ]
         }
       }
     }
@@ -600,14 +620,19 @@ export const translations = {
     whitepaper: {
       tocTitle: '目录',
       toc: [
-        '简介：问题与我们的解决方案',
-        '生态系统的愿景与使命',
-        '区块链技术与架构',
-        '详细代币经济学（$SOLS）',
-        '完整路线图与未来里程碑',
-        '去中心化治理机制',
-        '协议安全与审计',
-        '结论：Solstice 的未来'
+  '1. 简介：问题与我们的解决方案',
+  '2. 生态系统的愿景与使命',
+  '3. 区块链技术与架构',
+  '4. 详细代币经济学（$SOLS）',
+  '5. 完整路线图与未来里程碑',
+  '6. 去中心化治理机制',
+  '7. 协议安全与审计',
+  '8. 结论：Solstice 的未来',
+  '9. SOLS 代币透明度',
+  '10. 预售：参与方式、要求与安全',
+  '11. DAO：运作、提案与投票',
+  '12. 常见问题 (FAQ)',
+  '13. 法律条款、条件与隐私'
       ],
       sections: {
         presale: {

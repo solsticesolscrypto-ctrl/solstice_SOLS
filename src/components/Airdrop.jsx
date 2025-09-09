@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
+import { collection, addDoc, getDocs, query, orderBy } from 'firebase/firestore';
 
 function Airdrop({ t }) {
-  // Participantes reales registrados
-  // Si en el futuro se muestran imágenes de usuario o premios, usar loading="lazy" y decoding="async" para optimizar
-  const [participants, setParticipants] = useState(() => {
-    const saved = localStorage.getItem('airdrop_participants');
-    return saved ? JSON.parse(saved) : [];
-  });
-  // Guardar participantes en localStorage cada vez que cambian
-  useEffect(() => {
-    localStorage.setItem('airdrop_participants', JSON.stringify(participants));
-  }, [participants]);
+  const [participants, setParticipants] = useState([]);
   const [wallet, setWallet] = useState('');
   const [twitterUser, setTwitterUser] = useState('');
   const [message, setMessage] = useState('');
@@ -19,9 +12,29 @@ function Airdrop({ t }) {
   const [retweetChecked, setRetweetChecked] = useState(false);
   const [twitterLinkClicked, setTwitterLinkClicked] = useState(false);
   const [retweetLinkClicked, setRetweetLinkClicked] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  // Leer participantes de Firestore
+  const fetchParticipants = async () => {
+    setLoading(true);
+    try {
+      const q = query(collection(db, 'airdrop_participants'), orderBy('created', 'desc'));
+      const snapshot = await getDocs(q);
+      const data = snapshot.docs.map(doc => doc.data());
+      setParticipants(data);
+    } catch (e) {
+      setParticipants([]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchParticipants();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
     if (!twitterUser || twitterUser.length < 3) {
       setMessage('Por favor, ingresa tu usuario de Twitter.');
       return;
@@ -30,13 +43,21 @@ function Airdrop({ t }) {
       setMessage('Wallet de Solana no válida');
       return;
     }
-    setParticipants(prev => [
-      ...prev,
-      { wallet, twitter: twitterUser }
-    ]);
-    setMessage('¡Wallet registrada para el airdrop!');
-    setWallet('');
-    setTwitterUser('');
+    setLoading(true);
+    try {
+      await addDoc(collection(db, 'airdrop_participants'), {
+        wallet,
+        twitter: twitterUser,
+        created: Date.now()
+      });
+      setMessage('¡Wallet registrada para el airdrop!');
+      setWallet('');
+      setTwitterUser('');
+      fetchParticipants();
+    } catch (err) {
+      setMessage('Error al registrar. Intenta de nuevo.');
+    }
+    setLoading(false);
   };
 
   return (
@@ -103,10 +124,10 @@ function Airdrop({ t }) {
               placeholder={t['airdrop-twitter-placeholder']}
               value={twitterUser}
               onChange={e => setTwitterUser(e.target.value)}
-              className="border border-[#45a29e] bg-[#0b0c10] rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-[#66fcf1]/40 transition"
+              className="input border border-[#45a29e] bg-[#0b0c10] rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-[#66fcf1]/40 transition text-white"
               autoComplete="off"
               maxLength={30}
-              style={{ minWidth: '220px' }}
+              style={{ minWidth: '220px', color: '#fff' }}
               required
               aria-label="Usuario de Twitter"
             />
@@ -115,10 +136,10 @@ function Airdrop({ t }) {
               placeholder={t['airdrop-wallet-placeholder']}
               value={wallet}
               onChange={e => setWallet(e.target.value)}
-              className="border border-[#45a29e] bg-[#0b0c10] rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-[#66fcf1]/40 transition"
+              className="input border border-[#45a29e] bg-[#0b0c10] rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-[#66fcf1]/40 transition text-white"
               autoComplete="off"
               maxLength={44}
-              style={{ minWidth: '220px' }}
+              style={{ minWidth: '220px', color: '#fff' }}
               required
               aria-label="Wallet de Solana"
             />
@@ -144,7 +165,11 @@ function Airdrop({ t }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {participants.length === 0 ? (
+                  {loading ? (
+                    <tr>
+                      <td colSpan={2} className="px-4 py-4 text-gray-400 text-center">Cargando...</td>
+                    </tr>
+                  ) : participants.length === 0 ? (
                     <tr>
                       <td colSpan={2} className="px-4 py-4 text-gray-400 text-center">Aún no hay participantes registrados.</td>
                     </tr>

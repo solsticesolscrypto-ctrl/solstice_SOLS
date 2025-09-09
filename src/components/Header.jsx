@@ -106,7 +106,7 @@ const Header = ({ currentPage, setCurrentPage, language, setLanguage }) => {
   <div className="mx-auto w-full max-w-[var(--container-max)] relative flex flex-row items-center justify-between gap-2 px-2 md:px-6 py-2 overflow-x-auto no-scrollbar">
     <div className="flex flex-row items-center space-x-3 shrink-0 ml-0">
       <img
-        src="/solstice-custom-logo.png"
+        src={`${import.meta.env.BASE_URL}solstice-custom-logo.png`}
         alt="Solstice Logo"
         width="48"
         height="48"
@@ -116,12 +116,12 @@ const Header = ({ currentPage, setCurrentPage, language, setLanguage }) => {
         onError={(e) => {
           if (!e.currentTarget.dataset.fallback) {
             e.currentTarget.dataset.fallback = 'svg';
-            e.currentTarget.src = '/solstice-logo.svg';
+            e.currentTarget.src = `${import.meta.env.BASE_URL}solstice-logo.svg`;
             return;
           }
           if (e.currentTarget.dataset.fallback === 'svg') {
             e.currentTarget.dataset.fallback = 'vite';
-            e.currentTarget.src = '/vite.svg';
+            e.currentTarget.src = `${import.meta.env.BASE_URL}vite.svg`;
           }
         }}
       />

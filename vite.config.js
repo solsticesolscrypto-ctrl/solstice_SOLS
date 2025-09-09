@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   // Usa base personalizada si se define VITE_BASE; por defecto GitHub Pages en prod
   // Forzar base para GitHub Pages
-  const base = '/solstice_sols_crypto/';
+  const base = '/solstice_SOLS/';
   return {
     base,
     plugins: [

@@ -1,26 +1,44 @@
 
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from './ui/Button.jsx';
 import { fetchRecentPurchases } from '../utils/fetchRecentPurchases';
+import { useConnect, useAccounts, useDisconnect } from '@phantom/react-sdk';
+import { PublicKey, Connection, SystemProgram, Transaction } from '@solana/web3.js';
 
 const DEST_SOL = '3qxa32hbFKMTAesrtUBykqRcNnzGpix3F3QHQR5JcPBT';
+// const url = `https://solscan.io/tx/${txid}`; // Uncomment and use if needed
+
+const PROGRAM_ID = "ETGynhejRFgLWFLxVqwX3rPdMa1Gwt5AoqE77GjhvSHZ";
+// Usar este ID al construir instrucciones para llamar a tu programa
+
 
 const Presale = ({ t }) => {
   const [amount, setAmount] = useState('');
   const MAX_TOKENS_PER_WALLET = 4000000;
-  // Guardar solo la clave del mensaje, no el texto traducido
   const [successMsgKey, setSuccessMsgKey] = useState('');
   const [errorMsgKey, setErrorMsgKey] = useState('');
-  const [walletType, setWalletType] = useState(null); // 'phantom' | null
-  const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // Chequeo de conexión Phantom solo si está autorizada
-  // Eliminado el autoconnect: la wallet solo se conecta si el usuario pulsa el botón
-
-  // Estado para compras recientes
   const [recentPurchases, setRecentPurchases] = useState([]);
   const [loadingPurchases, setLoadingPurchases] = useState(true);
+  const TOTAL_TOKENS = 1000000;
+  const [soldTokens, setSoldTokens] = useState(0);
+  const percentSold = Math.min(100, Math.round((soldTokens / TOTAL_TOKENS) * 100));
+  function getMinAmount(p) {
+    if (p < 20) return 0.5;
+    if (p < 50) return 0.25;
+    if (p < 80) return 0.1;
+    return 0.01;
+  }
+  const minAmount = getMinAmount(percentSold);
+  const TOKEN_PRICE_USD = 0.01;
+  const raised = soldTokens * TOKEN_PRICE_USD;
+
+  // Phantom React SDK hooks
+  const { connect, isLoading: isConnecting } = useConnect();
+  const accounts = useAccounts();
+  const { disconnect } = useDisconnect();
+  const isConnected = accounts && accounts.length > 0;
+  const address = isConnected ? accounts[0].address : '';
 
   useEffect(() => {
     let mounted = true;
@@ -34,60 +52,26 @@ const Presale = ({ t }) => {
     return () => { mounted = false; };
   }, []);
 
-  // Desconectar Phantom
-  const handleDisconnectPhantom = async () => {
-    if (window.solana && window.solana.isPhantom) {
-      try {
-        await window.solana.disconnect();
-      } catch (e) {}
-    }
-    setWalletType(null);
-    setAddress('');
-  };
-
-  // Opcional: lógica de barra de progreso y layout
-  const TOTAL_TOKENS = 1000000;
-  const [soldTokens, setSoldTokens] = useState(0);
-  const percentSold = Math.min(100, Math.round((soldTokens / TOTAL_TOKENS) * 100));
-
-  // Función para obtener el mínimo de compra según el porcentaje vendido
-  function getMinAmount(p) {
-    if (p < 20) return 0.5;
-    if (p < 50) return 0.25;
-    if (p < 80) return 0.1;
-    return 0.01;
-  }
-  const minAmount = getMinAmount(percentSold);
-  const TOKEN_PRICE_USD = 0.01;
-  const raised = soldTokens * TOKEN_PRICE_USD;
-
   const handleConnectPhantom = async () => {
     setErrorMsgKey('');
     try {
-      if (window.solana && window.solana.isPhantom) {
-        setLoading(true);
-        console.log('[Phantom] Intentando conectar...');
-        const resp = await window.solana.connect({ onlyIfTrusted: false });
-        console.log('[Phantom] Conectado:', resp);
-        setWalletType('phantom');
-        setAddress(resp.publicKey.toString());
-      } else {
-        console.error('[Phantom] No se detectó la extensión Phantom.');
-        setErrorMsgKey('phantom-not-found');
-      }
+      await connect();
     } catch (err) {
-      console.error('[Phantom] Error al conectar:', err);
       setErrorMsgKey('phantom-connect-error');
-    } finally {
-      setLoading(false);
     }
+  };
+
+  const handleDisconnectPhantom = async () => {
+    try {
+      await disconnect();
+    } catch (e) {}
   };
 
   const handleBuy = async (e) => {
     e.preventDefault();
     setSuccessMsgKey('');
     setErrorMsgKey('');
-    if (!walletType || walletType !== 'phantom' || !address) {
+    if (!isConnected || !address) {
       setErrorMsgKey('presale-connect-required');
       return;
     }
@@ -95,28 +79,18 @@ const Presale = ({ t }) => {
       setErrorMsgKey('min-solana-rent');
       return;
     }
-    // Validar máximo de tokens por wallet
     if (Number(amount) * 10000 > MAX_TOKENS_PER_WALLET) {
       setErrorMsgKey('presale-max-tokens-wallet');
       return;
     }
     setLoading(true);
     try {
-      // --- INTEGRACIÓN PHANTOM ---
-      const { solana } = window;
-      if (!solana || !solana.isPhantom) throw new Error('phantom-not-found');
-      // Importar dependencias dinámicamente
-      const web3 = await import('@solana/web3.js');
-  // Usar el endpoint de Helius para evitar bloqueo por CSP
-  const connection = new web3.Connection(`https://mainnet.helius-rpc.com/?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`);
-      const destPubkey = new web3.PublicKey(DEST_SOL);
-      // Validar que la dirección conectada es la que firma
-      const walletPublicKey = solana.publicKey?.toString() || address;
-      if (walletPublicKey !== address) throw new Error('phantom-connect-error');
-      const fromPubkey = new web3.PublicKey(walletPublicKey);
-      const lamports = Math.floor(Number(amount) * 1e9); // 1 SOL = 1e9 lamports
-      const tx = new web3.Transaction().add(
-        web3.SystemProgram.transfer({
+      const connection = new Connection(`https://mainnet.helius-rpc.com/?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`);
+      const destPubkey = new PublicKey(DEST_SOL);
+      const fromPubkey = new PublicKey(address);
+      const lamports = Math.floor(Number(amount) * 1e9);
+      const tx = new Transaction().add(
+        SystemProgram.transfer({
           fromPubkey,
           toPubkey: destPubkey,
           lamports,
@@ -125,23 +99,13 @@ const Presale = ({ t }) => {
       tx.feePayer = fromPubkey;
       const { blockhash } = await connection.getLatestBlockhash();
       tx.recentBlockhash = blockhash;
-      // IMPORTANTE: Phantom solo funciona en sitios HTTPS y con permisos concedidos
-      console.log('[Phantom] Solicitando firma de transacción:', tx);
-      const signed = await solana.signTransaction(tx);
-      console.log('[Phantom] Transacción firmada:', signed);
+      // Solicitar firma usando el SDK de Phantom
+      const signed = await accounts[0].signTransaction(tx);
       const sig = await connection.sendRawTransaction(signed.serialize());
-      console.log('[Phantom] Transacción enviada. Signature:', sig);
       setSuccessMsgKey('presale-success');
       setSoldTokens(prev => Math.min(TOTAL_TOKENS, prev + Number(amount)));
     } catch (err) {
-      console.error('[Phantom] Error en la transacción:', err);
-      // Si el error es una clave conocida, úsala; si no, muestra mensaje genérico
-      const knownErrors = ['phantom-not-found', 'phantom-connect-error', 'presale-amount-invalid', 'presale-connect-required'];
-      if (knownErrors.includes(err.message)) {
-        setErrorMsgKey(err.message);
-      } else {
-        setErrorMsgKey('presale-tx-error');
-      }
+      setErrorMsgKey('presale-tx-error');
     }
     setLoading(false);
   };
@@ -175,14 +139,21 @@ const Presale = ({ t }) => {
       <span className="text-xs text-[#66fcf1] font-semibold mt-2">{t['presale-price-label'] || 'Precio del Token: 0.0001 SOLS'}</span>
     </div>
     <div className="flex flex-row w-full justify-center items-center mt-2 mb-2">
-          <Button
-            onClick={handleConnectPhantom}
-            className="w-fit px-4 py-2 text-base btn-primary shadow-md mx-auto"
-            disabled={loading || walletType === 'phantom'}
-          >
-            {walletType === 'phantom' ? (t['connected'] || t['wallet-connected'] || 'Phantom conectada') : (t['presale-connect-phantom'] || t['dao-btn-connect-wallet'] || t['connect-phantom'] || 'Conectar Billetera Solana')}
-          </Button>
+      {!isConnected ? (
+        <Button
+          onClick={handleConnectPhantom}
+          className="w-fit px-4 py-2 text-base btn-primary shadow-md mx-auto"
+          disabled={loading || isConnecting}
+        >
+          {isConnecting ? 'Conectando...' : (t['presale-connect-phantom'] || t['dao-btn-connect-wallet'] || t['connect-phantom'] || 'Conectar Billetera Solana')}
+        </Button>
+      ) : (
+        <div className="flex flex-col items-center">
+          <span className="text-xs text-[#66fcf1] mb-1">{address}</span>
+          <Button onClick={handleDisconnectPhantom} className="w-fit px-3 py-1 text-xs btn-primary shadow-md mx-auto mb-2">Desconectar</Button>
         </div>
+      )}
+    </div>
   <form onSubmit={handleBuy} className="flex flex-col gap-6 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto items-center">
           <div className="flex flex-col w-full items-center gap-4">
             <input
@@ -192,6 +163,7 @@ const Presale = ({ t }) => {
               step="0.01"
               placeholder={t['presale-amount-placeholder'] || t['amount-placeholder'] || 'Cantidad a comprar'}
               className="p-3 bg-[#181a20] text-white rounded-xl border border-[#23242a] focus:outline-none focus:ring-2 focus:ring-[#66fcf1] w-[230px] text-center placeholder:text-white/40 placeholder:font-light mb-3 shadow-sm"
+              style={{ color: '#fff' }}
               value={amount}
               onChange={e => setAmount(e.target.value)}
               disabled={loading || walletType !== 'phantom'}
