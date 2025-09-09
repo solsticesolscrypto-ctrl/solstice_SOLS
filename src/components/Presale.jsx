@@ -166,7 +166,7 @@ const Presale = ({ t }) => {
               style={{ color: '#fff' }}
               value={amount}
               onChange={e => setAmount(e.target.value)}
-              disabled={loading || walletType !== 'phantom'}
+              disabled={loading || !isConnected}
               autoComplete="off"
             />
             <span className="text-xs text-gray-400 block text-center mb-1">
@@ -190,7 +190,7 @@ const Presale = ({ t }) => {
             type="submit"
             className="px-6 py-3 text-base font-bold text-center text-black bg-[#66fcf1] rounded-2xl shadow-md hover:bg-[#45a29e] transition-all select-none"
             style={{background:'none',boxShadow:'none',padding:0,margin:0, color:'#0b0c10', backgroundColor:'#66fcf1'}}
-            disabled={loading || walletType !== 'phantom' || !address}
+            disabled={loading || !isConnected || !address}
           >
             {loading ? (t['presale-buy-loading'] || 'Procesando...') : (t['presale-buy'] || 'Comprar')}
           </Button>
